@@ -6,6 +6,8 @@ root.geometry("640x480") # 가로 * 세로
 
 Label(root, text="메뉴를 선택하세요").pack()
 
+# 하나만 선택할 수 있는 선택지 제시
+# value 가 존재
 burger_var = IntVar() # 여기에 int 형으로 값을 저장한다
 btn_burger1 = Radiobutton(root, text="햄버거", value=1, variable=burger_var)
 btn_burger1.select() # 기본값 선택
