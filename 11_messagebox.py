@@ -2,7 +2,7 @@ import tkinter.messagebox as msgbox
 from tkinter import *
 
 root = Tk()
-root.title("Nado GUI")
+root.title("First GUI")
 root.geometry("640x480") # 가로 * 세로
 
 # 기차 예매 시스템이라고 가정
