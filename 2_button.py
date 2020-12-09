@@ -18,14 +18,14 @@ btn4.pack()
 btn5 = Button(root, fg="red", bg="yellow", text="button5") # fg :color of words, bg : background
 btn5.pack()
 
-photo = PhotoImage(file="gui_basic/img.png")
+photo = PhotoImage(file="img.png")
 btn6 = Button(root, image=photo)
 btn6.pack()
 
 def btncmd():
-    print("버튼이 클릭되었어요")
+    print("Button is clicked")
 
-btn7 = Button(root, text="동작하는 버튼", command=btncmd)
+btn7 = Button(root, text="Working Button", command=btncmd)
 btn7.pack()
 
 root.mainloop()
