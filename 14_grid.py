@@ -1,13 +1,13 @@
 from tkinter import *
 
 root = Tk()
-root.title("Nado GUI")
-root.geometry("640x480") # 가로 * 세로
+root.title("First GUI")
+root.geometry("640x480")
 
 # btn1 = Button(root, text="버튼1")
 # btn2 = Button(root, text="버튼2")
 
-# # btn1.pack()
+# # btn1.pack() 쌓는 느낌이고 grid는 붙이는 느낌
 # # btn2.pack()
 
 # # btn1.pack(side="left")
@@ -22,8 +22,8 @@ btn_f17 = Button(root, text="F17", width=5, height=2)
 btn_f18 = Button(root, text="F18", width=5, height=2)
 btn_f19 = Button(root, text="F19", width=5, height=2)
 
-btn_f16.grid(row=0, column=0, sticky=N+E+W+S, padx=3, pady=3)
-btn_f17.grid(row=0, column=1, sticky=N+E+W+S, padx=3, pady=3)
+btn_f16.grid(row=0, column=0, sticky=N+E+W+S, padx=3, pady=3) # sticky 지정한 방향으로 크기를 쫙 늘려
+btn_f17.grid(row=0, column=1, sticky=N+E+W+S, padx=3, pady=3) # grid 에서 padx pady 는 그리스 사이 간격을 확보해 줌
 btn_f18.grid(row=0, column=2, sticky=N+E+W+S, padx=3, pady=3)
 btn_f19.grid(row=0, column=3, sticky=N+E+W+S, padx=3, pady=3)
 
@@ -69,13 +69,13 @@ btn_enter = Button(root, text="enter", width=5, height=2) # 세로로 합쳐짐
 btn_1.grid(row=4, column=0, sticky=N+E+W+S, padx=3, pady=3)
 btn_2.grid(row=4, column=1, sticky=N+E+W+S, padx=3, pady=3)
 btn_3.grid(row=4, column=2, sticky=N+E+W+S, padx=3, pady=3)
-btn_enter.grid(row=4, column=3, rowspan=2, sticky=N+E+W+S, padx=3, pady=3) # 현재 위치로부터 아래쪽으로 몇 줄을 더함
+btn_enter.grid(row=4, column=3, rowspan=2, sticky=N+E+W+S, padx=3, pady=3) # rowspan : 현재 위치로부터 아래쪽으로 몇 줄을 더함
 
 # 0 시작 줄
 btn_0 = Button(root, text="0", width=5, height=2) # 가로로 합쳐짐
 btn_point = Button(root, text=".", width=5, height=2)
 
-btn_0.grid(row=5, column=0, columnspan=2, sticky=N+E+W+S, padx=3, pady=3) # 현재 위치로부터 오른쪽으로 몇 칸 더함
+btn_0.grid(row=5, column=0, columnspan=2, sticky=N+E+W+S, padx=3, pady=3) # columnspan 현재 위치로부터 오른쪽으로 몇 칸 더함
 btn_point.grid(row=5, column=2, sticky=N+E+W+S, padx=3, pady=3)
 
 root.mainloop()
