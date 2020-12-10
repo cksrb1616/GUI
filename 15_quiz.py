@@ -2,7 +2,7 @@ import os
 from tkinter import *
 
 root = Tk()
-root.title("제목 없음 - Windows 메모장")
+root.title("Untitled- Windows text")
 root.geometry("640x480") # 가로 * 세로
 
 # 열기, 저장 파일 이름
@@ -11,7 +11,7 @@ filename = "mynote.txt"
 def open_file():
     if os.path.isfile(filename): # 파일 있으면 True, 없으면 False
         with open(filename, "r", encoding="utf8") as file:
-            txt.delete("1.0", END) # 텍스트 위젯 본문 삭제
+            txt.delete("1.0", END) # 현제 텍스트 위젯 본문 삭제 리셋하는 과정임
             txt.insert(END, file.read()) # 파일 내용을 본문에 입력
 
 def save_file():
@@ -33,14 +33,14 @@ menu.add_cascade(label="서식")
 menu.add_cascade(label="보기")
 menu.add_cascade(label="도움말")
 
-# 스크롤 바
-scrollbar = Scrollbar(root)
+# 스크롤 바 설정
+scrollbar = Scrollbar(root) # 다른 위젯이 없기 때문에 root를 하나의 위젯으로 처리
 scrollbar.pack(side="right", fill="y")
 
 # 본문 영역
-txt = Text(root, yscrollcommand=scrollbar.set)
+txt = Text(root, yscrollcommand=scrollbar.set) # 스크롤바 형성
 txt.pack(side="left", fill="both", expand=True)
-scrollbar.config(command=txt.yview)
+scrollbar.config(command=txt.yview)맵핑
 
 root.config(menu=menu)
 root.mainloop()
