@@ -47,7 +47,9 @@ def merge_image():
     # heights = [x.size[1] for x in images]
 
     # [(10, 10), (20, 20), (30, 30)]
-    widths, heights = zip(*(x.size for x in images))
+    widths, heights = zip(*(x.size for x in images)) # 같은 index 끼리를 합쳐줌 mixed = list(zip(kor, eng))
+    # *을 위해서 () 처리
+    # unzip : zip(*mixed)
     # widths = [x.size[0] for x in images]
     # heights = [x.size[1] for x in images]
 
@@ -65,7 +67,7 @@ def merge_image():
         result_img.paste(img, (0, y_offset))
         y_offset += img.size[1]
 
-        progress = (idx + 1) / len(images) * 100  # 실제 percent 정보를 계산
+        progress = (idx + 1) / len(images) * 100  # 0부터 시작하기에 1을 더함 실제 percent 정보를 계산
         p_var.set(progress)
         progress_bar.update()
 
