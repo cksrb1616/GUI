@@ -13,7 +13,7 @@ root.title("Nado GUI")
 def add_file():
     files = filedialog.askopenfilenames(title="이미지 파일을 선택하세요", \
                                         filetypes=(("PNG 파일", "*.png"), ("모든 파일", "*.*")), \
-                                        initialdir=r"C:\Users\Nadocoding\Desktop\PythonWorkspace")
+                                        initialdir=r"C:\Users")
     # 최초에 사용자가 지정한 경로를 보여줌
 
     # 사용자가 선택한 파일 목록
@@ -31,7 +31,7 @@ def del_file():
 # 저장 경로 (폴더)
 def browse_dest_path():
     folder_selected = filedialog.askdirectory()
-    if folder_selected is None:  # 사용자가 취소를 누를 때
+    if folder_selected == '': # 취소를 누르면 그냥 넘어가는 처리
         return
     # print(folder_selected)
     txt_dest_path.delete(0, END)

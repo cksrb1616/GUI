@@ -1,17 +1,19 @@
+import os
 import tkinter.ttk as ttk
 import tkinter.messagebox as msgbox
 from tkinter import *  # __all__
 from tkinter import filedialog
+from PIL import Image
 
 root = Tk()
 root.title("Nado GUI")
 
 
 # 파일 추가
-def add_file(): # filedialog 는 __all__ 에 정의 되지 않은 서브 모듈이라서 별도로 import 필요
+def add_file():
     files = filedialog.askopenfilenames(title="이미지 파일을 선택하세요", \
                                         filetypes=(("PNG 파일", "*.png"), ("모든 파일", "*.*")), \
-                                        initialdir=r"C:\Users") # 최초에 c:/ 를 보여줌  r: 경로처리할 떄 string 그대로 사용하겠다
+                                        initialdir=r"C:\Users")
     # 최초에 사용자가 지정한 경로를 보여줌
 
     # 사용자가 선택한 파일 목록
@@ -22,27 +24,105 @@ def add_file(): # filedialog 는 __all__ 에 정의 되지 않은 서브 모듈�
 # 선택 삭제
 def del_file():
     # print(list_file.curselection())
-    for index in reversed(list_file.curselection()): # 앞에서부터 지우면 2번째 것이 index 0 이 되기 떄문에 뒤에 index 부터 삭제
+    for index in reversed(list_file.curselection()):
         list_file.delete(index)
 
 
 # 저장 경로 (폴더)
 def browse_dest_path():
     folder_selected = filedialog.askdirectory()
-    if folder_selected == '': # 취소를 누르면 그냥 넘어가는 처리
+    if folder_selected == "":  # 사용자가 취소를 누를 때 askdirectory() 가 ''를 리턴하기 때문에
+        print("폴더 선택 취소")
         return
-    # if folder_selected is None:  # 사용자가 취소를 누를 때 그냥 넘어가는 처리
-    #     return
-    txt_dest_path.delete(0, END) # Entry 라서 # text 였으면  ("1.0", END)
+    # print(folder_selected)
+    txt_dest_path.delete(0, END)
     txt_dest_path.insert(0, folder_selected)
+
+
+# 이미지 통합
+def merge_image():
+    # print("가로넓이 : ", cmb_width.get())
+    # print("간격 : ", cmb_space.get())
+    # print("포맷 : ", cmb_format.get())
+
+    try: # 디렉토리가 없거나 디렉토리에 권한이 없을 등 그런 에러들이 발생했을 떄
+        # 가로넓이
+        img_width = cmb_width.get()
+        if img_width == "원본유지":
+            img_width = -1  # -1 일때는 원본 기준으로
+        else:
+            img_width = int(img_width)
+
+        # 간격
+        img_space = cmb_space.get()
+        if img_space == "좁게":
+            img_space = 30
+        elif img_space == "보통":
+            img_space = 60
+        elif img_space == "넓게":
+            img_space = 90
+        else:  # 없음
+            img_space = 0
+
+        # 포맷
+        img_format = cmb_format.get().lower()  # PNG, JPG, BMP 값을 받아와서 소문자로 변경
+
+        #####################################
+
+        images = [Image.open(x) for x in list_file.get(0, END)]
+
+        # 이미지 사이즈 리스트에 넣어서 하나씩 처리
+        image_sizes = []  # [(width1, height1), (width2, height2), ...]
+        if img_width > -1:
+            # width  값 변경
+            image_sizes = [(int(img_width), int(img_width * x.size[1] / x.size[0])) for x in images]
+        else:
+            # 원본 사이즈 사용
+            image_sizes = [(x.size[0], x.size[1]) for x in images]
+
+        # x = width = size[0]
+        # y = height = size[1]
+        # x' = img_width # 이 값으로 변경 해야 함
+        # y' = x'y / x = img_width * size[1] / size[0]
+
+        widths, heights = zip(*(image_sizes))
+
+        max_width, total_height = max(widths), sum(heights)
+
+        # 스케치북 준비
+        if img_space > 0:  # 이미지 간격 옵션 적용해서 스케치북 크기를 간격 추가되는 만큼 늘려야하기 때문
+            total_height += (img_space * (len(images) - 1))
+
+        result_img = Image.new("RGB", (max_width, total_height), (255, 255, 255))
+        y_offset = 0  # y 위치
+
+        for idx, img in enumerate(images):
+            # width 가 원본유지가 아닐 때에는 이미지 크기 조정
+            if img_width > -1:
+                img = img.resize(image_sizes[idx])
+
+            result_img.paste(img, (0, y_offset))
+            y_offset += (img.size[1] + img_space)  # height 값 + 사용자가 지정한 간격
+
+            progress = (idx + 1) / len(images) * 100  # 실제 percent 정보를 계산
+            p_var.set(progress)
+            progress_bar.update()
+
+        # 포맷 옵션 처리
+        file_name = "nado_photo." + img_format
+        dest_path = os.path.join(txt_dest_path.get(), file_name)
+        result_img.save(dest_path)
+        msgbox.showinfo("알림", "작업이 완료되었습니다.")
+    except Exception as err:  # 예외처리
+        msgbox.showerror("에러", err)
 
 
 # 시작
 def start():
     # 각 옵션들 값을 확인
-    print("가로넓이 : ", cmb_width.get())
-    print("간격 : ", cmb_space.get())
-    print("포맷 : ", cmb_format.get())
+    # print("가로넓이 : ", cmb_width.get())
+    # print("간격 : ", cmb_space.get())
+    # print("포맷 : ", cmb_format.get())
 
     # 파일 목록 확인
     if list_file.size() == 0:
@@ -53,6 +133,9 @@ def start():
     if len(txt_dest_path.get()) == 0:
         msgbox.showwarning("경고", "저장 경로를 선택하세요")
         return
+
+    # 이미지 통합 작업
+    merge_image()
 
 
 # 파일 프레임 (파일 추가, 선택 삭제)
