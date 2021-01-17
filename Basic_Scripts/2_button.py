@@ -18,7 +18,7 @@ btn4.pack()
 btn5 = Button(root, fg="red", bg="yellow", text="button5") # fg :color of words, bg : background
 btn5.pack()
 
-photo = PhotoImage(file="img.png")
+photo = PhotoImage(file="../img.png")
 btn6 = Button(root, image=photo)
 btn6.pack()
 
