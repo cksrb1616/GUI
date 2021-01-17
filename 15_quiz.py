@@ -40,7 +40,7 @@ scrollbar.pack(side="right", fill="y")
 # 본문 영역
 txt = Text(root, yscrollcommand=scrollbar.set) # 스크롤바 형성
 txt.pack(side="left", fill="both", expand=True)
-scrollbar.config(command=txt.yview)맵핑
+scrollbar.config(command=txt.yview) # 맵핑
 
 root.config(menu=menu)
 root.mainloop()
